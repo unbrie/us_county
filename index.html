@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Final Project</title>
+
+<meta charset="utf-8">
+<meta name="author" content="Brian Lee & Sean Stephens">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="ctrl/style.css">
+<link rel="stylesheet" href="ctrl/lib/css/bootstrap.min.css">
+
+<script src="ctrl/lib/jquery-1.11.2.js"></script>
+<script src="ctrl/lib/js/bootstrap.min.js"></script>
+<script src="ctrl/lib/d3.min.js"></script>
+<script src="ctrl/lib/angular.js"></script>
+<script src="ctrl/lib/topojson.v1.min.js"></script>
+
+</head>
+
+<body>
+<nav class="navbar navbar-inverse" id="menubar" data-spy="affix" data-offset-top="250">
+	<div class="navbar-header" style="margin:auto 40px;">
+		<button class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand menu_btn" id="main_title">Final Project</a>
+	</div>	<!-- navbar-header -->
+    
+	<div class="collapse navbar-collapse" id="menu">
+		<ul class="nav navbar-nav">
+			<li class="dropdown">
+				<a class="dropdwon-toggle" data-toggle="dropdown" href="#">SUBJECT <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a class="menu_btn sub" id="sub_water" href="#">Water Use</a></li>
+					<li><a class="menu_btn sub" id="sub_birth" href="#">Something Use</a></li>
+				</ul>
+			</li>
+			<li>
+				<a class="dropdwon-toggle" data-toggle="dropdown" href="#">SEARCH <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a class="menu_btn srch" id="srch_cate" href="#">Category</a></li>
+					<li><a class="menu_btn srch" id="srch_name" href="#name">Name</a></li>
+					<li><a class="menu_btn srch" id="srch_map" href="#">Map</a></li>
+				</ul>
+			</li>
+			<li class="dropdown">
+				<a class="dropdwon-toggle" data-toggle="dropdown" href="#">ABOUT <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a class="menu_btn abt1" id="abt_pj" href="#">Project</a></li>
+					<li><a class="menu_btn abt2" id="abt_dv" href="#">Developer</a></li>
+				</ul>
+			</li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right" style="margin-right:15px;">
+			<!--<li><a href="#">Counties <span class="glyphicon glyphicon-shopping-cart"></span></a></li>-->
+			<li><a id="menu_cbox">Saved Counties <span class="glyphicon glyphicon-shopping-cart"></span></a></li>
+		</ul>
+	</div>	<!-- navbar-collapse -->
+</nav> <!-- #menubar -->
+
+<div class="screen front">
+    <div class="showcase">
+        <div class="carousel slide" id="slide_show">
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="img/water_01.jpg" alt="Water Use">
+                    <section class="caro_desc">
+                    	<h1>Water Use</h1>
+                        <h4>Check water use per capita of each county now!</h4>
+                        <div class="start" id="view_btn">START</div>
+                    </section>
+                </div>
+                
+                <div class="item">
+                    <img src="img/baby_01.jpg" alt="Birth Rate">
+					<section class="caro_desc">
+                    	<h1>Birth Rate</h1>
+                        <h4>See which county has a noticeable birth rate each year.</h4>
+                        <div class="View" id="view_btn">START</div>
+                    </section>
+                </div>
+                <!--
+                <div class="item">
+                    <img src="" alt="">
+                    <div class="carousel-caption"></div>
+                </div>-->
+            </div>
+        
+            <ol class="carousel-indicators" id="caro_indicator">
+                <li data-target="#slide_show" data-slide-to="0" class="active"></li>
+                <li data-target="#slide_show" data-slide-to="1"></li>
+                <li data-target="#slide_show" data-slide-to="2"></li>
+            </ol>
+        </div>
+    </div> <!-- .showcase -->
+    
+    <div class="subject_option">
+        <h4>Choose a Subject</h4>
+        <p>There are over 3,000 counties in the United States. These subjects contain each county's information and comparison as well.</p>
+        <ul>
+            <li>Water Use</li>
+            <li>Birth Rate</li>
+            <li>Something Else</li>
+            <li>Something Else</li>
+            <li>Something Else</li>
+            <li>Something Else</li>
+        </ul>
+    </div> <!-- .subject_option -->
+</div><!-- .scree front -->
+
+<div class="screen subject" style="display:none;">
+    	<svg id="svg_map"></svg>
+	    <svg id="svg_lp1"></svg>
+    	<svg id="svg_lp2"></svg>
+    
+</div>	<!-- .screen subject -->
+
+<div class="screen search" style="display:none;">
+	<ul class="nav nav-tabs" id="srch_tab">
+    	<li><a href="#category" data-toggle="tab">Category</a></li>
+        <li><a href="#name" data-toggle="tab">Name</a></li>
+        <li><a href="#location" data-toggle="tab">Map</a></li>
+    </ul>
+    
+    <div class="tab-content">
+        <div class="tab-pane fade" id="category">
+        	<!--<h3>Category Search</h3>-->
+            <ul class="loc level_1">
+            	<li class="lv1 not_chosen" value="w">WEST</li>
+                <li class="lv1 not_chosen" value="m">MIDWEST</li>
+                <li class="lv1 not_chosen" value="n">NORTHEAST</li>
+                <li class="lv1 not_chosen" value="s">SOUTH</li>
+            </ul>
+            <ul class="loc level_2" style="display:none;"></ul>
+            <ul class="loc level_3" style="display:none;"><!-- State Level --></ul>
+            <ul class="loc level_4" style="display:none;"><!-- County Level --></ul>
+        </div>
+        
+        <div class="tab-pane fade" id="name">
+        	<div ng-app="app" ng-controller="name_ctrl">
+                <h4>Type County Name</h4>
+                <input type="text" ng-model="type" id="county_search" tabindex="1" autofocus>
+                <a type="button" class="btn btn-success btn-sm" id="select" tabindex="2">SELECT</a>
+                <ul>
+                	<li ng-repeat="x in arr | filter:type">
+                    	{{ x }}
+                    </li>
+                </ul>
+        	</div>
+        </div>
+        
+        <div class="tab-pane fade" id="location">
+        	<svg id="search_map"></svg>
+        </div>
+    </div>	<!-- tab-content -->
+</div>		<!-- .screen search -->
+
+<div class="screen about_pj" style="display:none;">
+	<section id="pj_title">
+        <h2>Data Visualization Final Project</h2>
+        <h5>Brian Lee & Sean Stephens (2015)</h5><br>
+    </section>
+    
+    <section id="pj_goal">
+    	<h4>Goal</h4>
+        <p>Successfully get the whole credits, so ultimately get 'A' from CSC 444 Class. <br>
+        Send <b><u>Sean Stephens</u></b> to the White House to condemn North Korea.</p><br>
+    </section>
+
+	<section id="pj_desc">    
+    	<h4>Description</h4>
+        <p>Applied "Interaction", "Aggregate" and "Filtering" Principles.</p>
+	</section>
+        
+</div>	<!-- .screen about_pj -->
+
+<div class="screen about_dv" style="display:none;">
+	<h1>About Developers</h1>
+    <img src="img/blee.png" alt="Brian Lee" class="img-circle prf_img" width="100" height="100">
+	<h3>Brian Lee<span><a href="http://linkedin.com/pub/brian-lee/96/620/2b0" target="_blank">LinkedIn</a> | <a href="http://brianin.altervista.org" target="_blank">Website</a></span></h3>
+    <p>Brian is a senior undergraduate studying Computer Science at University of Arizona, and also has an experience of studying in architecture major. Still he is interested in design and artwork, and wants to apply concept of neatness and clearness into designing and its programming as well. Southern Arizona's desert climate made him stronger against Wonder Woman and he got survival skills in the wilderness with no A/C, but he needs to come out of the desert to avoid the boredom and the threat of creepy cactus thorns. Perhaps, it is time for him to pursue a new journey in a city like New York?</p>
+    
+    <img src="img/sstephens.jpg" alt="Sean Stephens" class="img-circle prf_img" width="100" height="100">
+    <h3>Sean Stephens<span><a href="#" target="_blank">LinkedIn</a></span></h3>
+    <p>Sean is a cool-looking nice guy.</p>
+</div>	<!-- .screen about_dv -->
+
+
+<div class="footer">
+	<section class="foot_sum">
+		
+		<div>SPRING 2015 | CSC 444<br>
+			University of Arizona<br><br>
+			This Project is done by <b><u>Brian Lee</u></b> and <b><u>Sean Stephens</u></b>.</div>
+		<nav>
+			<h4>SUBJECT</h4>
+			<ul>
+				<li>Water Use</li>
+				<li>Something</li>
+				<li>Else</li>
+			</ul>
+		</nav>
+		<nav>
+			<h4>SEARCH</h4>
+			<ul>
+				<li>By Category</li>
+				<li>By Name</li>
+				<li>By Map</li>
+			</ul>
+		</nav>
+		<nav>
+			<h4>ABOUT</h4>
+			<ul>
+				<li>Project</li>
+				<li>Developer</li>
+			</ul>
+		</nav>
+		<nav>
+			<h4 style="width:130px;">COUNTY BOX</h4>
+		</nav>
+		
+	</section>
+	<section class="foot_cpright">COPYRIGHT &copy 2015 BRIAN LEE & SEAN STEPHENS ALL RIGHTS RESERVED</section>
+</div> <!-- .footer -->
+
+<div id="cbox" value="close">
+	<div id="cbox_tab">
+		Saved Counties
+        <span><button class="close" id="cbox_close">&times;</button></span>
+    </div>
+    <p id="cbox_msg">The list is empty.</p><hr>
+	<ul id="cbox_list"></ul><hr>
+    <svg id="svg_compare"></svg>
+</div>
+
+<div id="search_map_info"></div>
+
+<script src="ctrl/ctrl.js"></script>
+<script src="ctrl/visz.js"></script>
+</body>
+</html>

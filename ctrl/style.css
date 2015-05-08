@@ -1,0 +1,402 @@
+/* Written by Brian Lee & Sean Stephens */
+
+body {
+	text-align:center;
+}
+
+#menubar {
+	border-radius:0px;
+	margin:0;
+}
+
+#menubar.affix {
+	position:fixed;
+	top:0px;
+	width:100%;
+	z-index:100;
+	opacity:0.8;	
+}
+
+#menubar a {
+	cursor:pointer;	
+}
+
+/* >>> Screen Front */
+.showcase {
+	height:600px;
+	overflow:hidden;	
+}
+
+.carousel.slide {
+
+}
+
+.showcase img {
+	width:100%;
+	
+}
+
+.carousel-indicators {
+	position:relative;
+	top:580px;
+}
+
+#caro_indicator li {
+	border:1px solid hsl(0,0%,60%);
+}
+
+.caro_desc {
+	position:absolute;
+	top:50px;
+	left:50px;
+	text-align:left;
+}
+
+#view_btn {
+	width:200px;
+	margin:40px 0;
+	padding:20px;
+	border:1px solid black;
+	cursor:pointer;
+	font-weight:bold;
+	font-size:20px;
+	text-align:center;
+}
+
+#view_btn:hover {
+	background:black;
+	color:white;
+	opacity:0.3;
+	-webkit-transition:all 0.3s;
+	transition:all 0.3s;	
+}
+
+.subject_option {
+	padding:60px 0 80px;
+	background:hsl(0,0%,95%);
+}
+
+.subject_option ul li {
+	display:inline-block;
+	width:300px;
+	height:180px;
+	margin:50px;
+	border:0px dashed gray;
+	border-radius:1px;
+	font-size:20px;
+	background:white;
+	box-shadow:3px 3px 6px gray;
+	cursor:pointer;
+}	/* <<< Screen Front */
+
+
+/* footer */
+.footer {
+	clear:both;
+	background:hsl(0,0%,5%);
+	padding-bottom:30px;
+	color:hsl(0,0%,40%);
+}
+
+.foot_sum {
+	padding-right:30px;
+	margin:auto;
+	display:table;
+	text-align:left;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:11px;
+}
+.foot_sum div {
+	float:left;
+	margin-top:40px;
+	margin-right:15px;
+	margin-left:30px;
+	width:180px;
+}
+.foot_sum nav {
+	float:left;
+	margin-left:15px;
+	width:140px;
+	padding:30px;
+	
+}
+
+.foot_sum nav ul{
+	padding:0;
+}
+
+.foot_sum ul {
+	list-style:none;
+}
+
+.foot_cpright {
+	padding:30px;
+	background:hsl(0,0%,15%);
+	color:hsl(0,0%,50%);
+	font-size:10px;
+	font-weight:bold;
+	font-family:Verdana, Geneva, sans-serif;
+	word-spacing:4px;
+}	/* <<< footer */
+
+
+/* search >>> */
+.search {
+	margin:50px 100px;
+}
+
+#category {
+	padding-top:50px;	
+}
+
+.loc > li {
+	display:inline-block;
+	width:200px;
+	max-height:160px;
+	padding:60px 0;
+	background:steelblue;
+	color:white;
+	font-size:30px;
+	font-family:Verdana, Geneva, sans-serif;
+	word-break:keep-all;
+	vertical-align:bottom;
+	margin:5px;
+}
+
+.loc > li:hover {
+	opacity:0.7;
+	cursor:pointer;
+}
+
+.chosen:hover {
+	opacity:1;
+	-webkit-transition:0.3s;
+	transition:0.3s;
+}
+
+#name {
+	margin:50px;
+	text-align:left;	
+}
+
+#name h4 {
+	margin: 30px;
+}
+
+#name input {
+	width:200px;
+	height:30px;
+	margin:20px 40px 20px 30px;
+	border-radius:3px;
+	border:1px solid black;
+	box-shadow:none;
+}
+
+#name input:focus {
+	box-shadow:0 0 3px #71B7C4;	
+	border:none;
+}
+
+#search_map {
+	width:100%;
+	height:600px;
+	border:1px solid hsl(0,0%,92%);
+	margin-top:40px;	
+	background:white;
+}
+
+#search_map_info {
+	display:none;
+	position:relative;
+	width:200px;
+	height:70px;
+	border-radius:15px;
+	box-shadow:0 0 3px gray;
+	background:white;
+	border:1px solid gray;	
+}	/* <<< search */
+
+/* About >>> */
+.about_pj {
+	text-align:left;
+	padding:50px;	
+}
+
+.about_pj p {
+	margin:10px 30px;	
+}
+
+.about_dv {
+	background:hsl(0,0%,10%);
+}
+
+.about_dv h1, .about_dv h3, .about_dv p {
+	margin:0;	
+}
+
+.about_dv h1 {
+	color:hsl(0,0%,40%);
+	text-align:left;
+	letter-spacing:6px;
+	padding:25px 150px;
+	background:black;
+}
+
+.about_dv img {
+	position:relative;
+	margin:40px 0 0;
+}
+
+.about_dv h3 {
+	padding:20px 0;
+	color:hsl(0,0%,70%);
+}
+
+.about_dv h3 span {
+	display:block;
+	margin:10px 0 0;
+	font-size:12px;
+	font-weight:bold;
+}
+
+.about_dv h3 span a {
+	color:hsl(0,0%,50%);
+}
+
+.about_dv p {
+	text-align:left;
+	padding:60px 100px;
+	background:hsl(0,0%,20%);
+	color:hsl(0,0%,70%);
+	font-size:14px;
+	font-family:Verdana, Geneva, sans-serif;
+	line-height:2;
+	text-indent:30px;
+}
+
+
+/* subject >>> */
+svg {
+	border:1px solid white;
+}
+
+.subject {
+	padding:30px 0;
+	background:black;
+}
+
+#svg_map {
+	vertical-align:top;
+	width:920px;
+	height:600px;
+}
+
+#svg_lp1, #svg_lp2 {
+	width:450px;
+	height:300px;
+}
+
+#water {
+	min-width:500px;
+	width:60%;
+	height:550px;
+}
+
+.us {
+	fill:none;
+	stroke:hsl(120,100%,0%);
+	stroke-width:.3px;
+}
+
+.state {
+	fill:none;
+	stroke:hsl(240,50%,0%);
+}
+
+.county {
+	fill:hsl(240,40%,60%);
+	stroke:hsl(120,0%,100%);
+	stroke-width:0.3px;
+}
+
+.county:hover {
+	fill:orange;
+}
+
+.active {
+	fill:white;
+}
+
+#county_search {
+	width:300px;
+	margin:100px 20px;
+}	/* <<< subject */
+
+
+
+/* County Box >>> */
+#cbox {
+	display:none;
+	position:fixed;
+	z-index:100;
+	top:30%;
+	left:10%;
+	width:80%;
+	height:40px;
+	overflow:hidden;
+	background:white;
+	border:1px solid gray;
+	box-shadow:0 0 5px steelblue;
+}
+
+#cbox_tab {
+	
+	border-bottom:1px solid black;		
+	background:hsl(0,0%,92%);
+	margin:0;
+	padding:10px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:13px;
+	text-transform:uppercase;
+	font-weight:bold;
+	vertical-align:middle;
+}
+
+
+#cbox_close {
+	position:relative;
+	top:-2px;
+	right:2px;
+}
+
+#cbox_msg {
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	margin:50px 0;
+}
+
+#cbox_list > li {
+	display:inline-block;
+	width:160px;
+	padding:20px 0;
+	margin:10px 20px;
+	border-radius:2px;
+	border:none;
+	background:#3DA03F;
+	color:white;
+	cursor:pointer;
+}
+
+#cbox_list > li:hover {
+	-webkit-transition:all 0.3s;
+	transition:all 0.15s;
+	background:#D76666;	
+}	
+
+#svg_compare {
+	width:85%;
+	height:300px;
+	border:1px solid gray;
+	margin:40px 0;
+}/* <<< County Box */
