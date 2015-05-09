@@ -22,6 +22,10 @@ body {
 }
 
 /* >>> Screen Front */
+.screen {
+	min-height:400px;	
+}
+
 .showcase {
 	height:600px;
 	overflow:hidden;	
@@ -197,24 +201,57 @@ body {
 	border:none;
 }
 
+#location p {
+	margin-top:30px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:11px;
+	text-decoration:underline;
+	color:gray;	
+}
+
 #search_map {
 	width:100%;
 	height:600px;
 	border:1px solid hsl(0,0%,92%);
-	margin-top:40px;	
+	margin-top:20px;	
 	background:white;
 }
 
 #search_map_info {
 	display:none;
-	position:relative;
+	position:absolute;
+	z-index:90;
 	width:200px;
-	height:70px;
-	border-radius:15px;
-	box-shadow:0 0 3px gray;
+	padding:20px 0;
+	box-shadow:2px 2px 3px gray;
 	background:white;
-	border:1px solid gray;	
+	font-size:12px;
+	font-weight:bold;
+	color:hsl(0,0%,40%);
+}
+
+.srch_us {
+	fill:none;
+	stroke:hsl(205,74%,100%);
+	stroke-width:0.3px;
+}
+
+.srch_state {
+	fill:none;
+	stroke:hsl(50,74%,100%);
+	stroke-width:1.2px;
+}
+
+.srch_county {
+	fill:hsl(205,30%,70%);
+	stroke:hsl(0,0%,100%);
+	stroke-width:0.3px;
+}	
+
+.selected_county {
+	fill:white;
 }	/* <<< search */
+
 
 /* About >>> */
 .about_pj {

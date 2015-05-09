@@ -251,27 +251,31 @@ function level_3(selected) {
 
 function level_4(county_data) {
 	$(".lv4").click(function(){
-		
 		var value = $(this).attr("value");
-		if (!valid_chk(value)) { return; }
-		
-		county_box.push(value);
-		box_set(county_data);
-		
-		$("#cbox_list > li").click(function(){
-			var remove = $(this).attr("value");
-			$(this).fadeOut(600);
-			for (var i in county_box) {
-				if (county_box[i] == remove) {
-					county_box.splice(i,1);	
-				}
-			}
-			remove = "";
-			
-			if (county_box.length == 0) { $("#cbox_msg").html("The list is empty."); }
-		});
-		box_msg();
+		add_county(value, county_data);
 	});
+}
+
+function add_county(id, data) {
+	
+	if (!valid_chk(id)) { return; }
+	
+	county_box.push(id);
+	box_set(data);
+	
+	$("#cbox_list > li").click(function(){
+		var remove = $(this).attr("value");
+		$(this).fadeOut(600);
+		for (var i in county_box) {
+			if (county_box[i] == remove) {
+				county_box.splice(i,1);	
+			}
+		}
+		remove = "";
+		
+		if (county_box.length == 0) { $("#cbox_msg").html("The list is empty."); }
+	});
+	box_msg();
 }
 
 function valid_chk(value) {
@@ -334,31 +338,81 @@ $(document).keyup(function(event){
 
 // County Name Search
 angular.module("app", []).controller("name_ctrl", function($scope){
-	$scope.arr = ["benton", "pima"];
+	d3.json("ctrl/dat/countycodes.json", function(county_data) {
+		var id_list = d3.keys(county_data);
+		var county_list = d3.values(county_data);
+		county_name_list = county_list.map(function(d){
+			return d.nice;
+		});
+
+		$scope.arr = county_name_list;
+		$("#select").click(function(){
+			var name = $("#county_search").val();
+			
+			for (var i in county_data) {
+				if (county_data[i].nice.toLowerCase() == name) {
+					console.log(i);	
+				}
+			}
+		});
+	});
 });
 
 // Map Search
+var zoomScale_1 = d3.behavior.zoom()
+	.scaleExtent([1,10])
+	.on("zoom", zoomControl_1);
+	
 var loc = d3.select("#search_map").append("g");
 
 d3.json("ctrl/dat/us.json", function(topo) {
-	
-	loc.selectAll("path")
-		.data(topojson.feature(topo, topo.objects.counties).features)
-		.enter().append("path")
-		.attr({class:"county", d:path})
-		.on("click", clicked_1)
-		.call(zoomScale);
+	d3.json("ctrl/dat/countycodes.json", function(county_data) {
 		
-	loc.append("path")
-		.datum(topojson.mesh(topo, topo.objects.land))
-		.attr({class:"us", d:path});
-		
-	loc.append("path")
-		.datum(topojson.mesh(topo, topo.objects.states, function(a,b){ return a !== b; }))
-		.attr({class:"state", d:path});
+		loc.selectAll("path")
+			.data(topojson.feature(topo, topo.objects.counties).features)
+			.enter().append("path")
+			.attr({class:"srch_county", d:path})
+			.attr("id", function(d){ return d.id; })
+			.on("click", clicked_1)
+			.call(zoomScale_1);
+			
+		loc.append("path")
+			.datum(topojson.mesh(topo, topo.objects.land))
+			.attr({class:"srch_us", d:path});
+			
+		loc.append("path")
+			.datum(topojson.mesh(topo, topo.objects.states, function(a,b){ return a !== b; }))
+			.attr({class:"srch_state", d:path});
+			
+		$(".srch_county").hover(function(){
+			var cid = $(this).attr("id");
+			var whereami = county_data[cid].key;
 
+			$(this).css({fill:"hsl(205,74%,30%)"});
+			
+			$(document).mousemove(function(event){
+				var text = whereami;
+				
+				var x = event.pageX + 20;
+				var y = event.pageY + 20;
+				
+				$("#search_map_info").html(text);
+				$("#search_map_info").css({display:"block", left:x, top:y});
+			});
+		}, function(){
+			$(this).css({fill:"hsl(205,30%,70%)"});
+			$("#search_map_info").fadeOut();
+		});
+		
+		$(".srch_county").click(function(){
+			var cid = $(this).attr("id");
+			
+			add_county(cid, county_data);
+
+			$(this).attr("class","selected_county");
+		});
+	});
 });
-
 
 function zoomControl_1(){
 	loc.attr({transform:"translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")"});
@@ -388,7 +442,7 @@ function clicked_1(d){
 		.duration(500)
 		.attr({transform:"translate(" + width / 2 + "," + height / 2 + ")scale(" + k + 
 		") translate(" + -x + "," + -y + ")"});
-	
+	/*
 	loc.selectAll("path")
-		.classed("active", centered_1 && function(d){ return d === centered_1; });
+		.classed("selected_county", centered_1 && function(d){ return d === centered_1; });*/
 }
