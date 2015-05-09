@@ -145,7 +145,7 @@
                 <input type="text" ng-model="type" id="county_search" tabindex="1" autofocus>
                 <a type="button" class="btn btn-success btn-sm" id="select" tabindex="2">SELECT</a>
                 <ul>
-                	<li ng-repeat="x in arr | filter:type">
+                	<li ng-repeat="x in arr | filter:type track by $index">
                     	{{ x }}
                     </li>
                 </ul>
