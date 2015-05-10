@@ -4,12 +4,6 @@ var selected_menu = "main_title";
 var selected_class = "";
 var county_box = [];
 
-$("input").keypress(function(event){
-	if(event.keyCode == 13) {
-		$("#select").click();
-	}
-});
-
 // Menu Click
 $(".menu_btn").click(function() {
 	
@@ -85,61 +79,22 @@ $(".menu_btn").click(function() {
 
 
 // Category Search
-//$(".loc.level_1 > li").attr("class","lv1 not_chosen");
-/*
+$(".loc.level_1 > li").attr("class","lv1 not_chosen");
+$(".loc > li").hover(function(){
+		$(this).css({opacity:"0.7"});
+	},function(){
+		$(this).css({opacity:"1"});
+});
 
-function level_1(selected) {
-
-	$(".not_chosen").animate({"width":0, "height":0}, 1200).hide(1200);
-	
-	selected = $(this).attr("value");
-	//console.log(selected);
-	if (selected === "w") {
-		$(".loc.level_2").append("<li value='pc'>Pacific</li><li value='mt'>Mountain</li>");
-	}
-	else if (selected === "m") {
-		$(".loc.level_2").append("<li value='wn'>West North Central</li><li value='en'>East North Central</li>");
-	}
-	else if (selected === "n") {
-		$(".loc.level_2").append("<li value='ma'>Middle Atlantic</li><li value='ne'>New England</li>");
-	}
-	else if (selected === "s") {
-		$(".loc.level_2").append("<li value='ws'>West South Central</li><li value='es'>East South Central</li><li value='sa'>South Atlantic</li>");
-	}
-	$(".loc.level_2").delay(1200).slideDown(1200);
-	$(this).delay(2400).animate({padding:"10 0", opacity:"0.3"},800);
-	$(".loc.level_2 > li").attr("class","lv2 not_chosen");
-
-	// Level 2 Click
-	level_2(selected);
-	$(".lv1.chosen").click(function(){
-		$(".level_2, .level_3, .level_4").fadeOut(1200);
-		$(".lv1").animate({width:"200", padding:"60 0", "max-height":"160"}).delay(1200).fadeIn(1200)
-		
-		$(".lv1.not_chosen").click(function() {
-			$(".loc.level_1 > li").attr("class","lv1 not_chosen");
-			$(".loc.level_2 > li").attr("class","lv2 not_chosen");
-			$(".loc.level_3 > li").attr("class","lv3 not_chosen");
-			$(this).attr("class", "lv1 chosen");
-			level_1(selected);
-		});
-	});
-}*/
-
-// Level 1 Click
-var p = false;
 $(".lv1.not_chosen").click(function(){
+	level_1($(this));
+});
+
+function level_1(element) {
 	
-	if (p == true) { return; }
-	else { p = true; }
-	
-	var selected = "";
-	//level_1(selected);
-	
-	$(this).attr("class", "lv1 chosen");
-	$(".not_chosen").animate({"width":0, "height":0}, 600).hide(600);
-	
-	selected = $(this).attr("value");
+	var selected = element.attr("value");
+	element.attr("class", "lv1 chosen");
+	$(".not_chosen").animate({"width":0}, 600).hide(600);
 	
 	if (selected === "w") {
 		$(".loc.level_2").append("<li value='pc'>Pacific</li><li value='mt'>Mountain</li>");
@@ -153,82 +108,75 @@ $(".lv1.not_chosen").click(function(){
 	else if (selected === "s") {
 		$(".loc.level_2").append("<li value='ws'>West South Central</li><li value='es'>East South Central</li><li value='sa'>South Atlantic</li>");
 	}
+	
 	$(".loc.level_2").delay(600).slideDown(600);
-	$(this).delay(1200).animate({padding:"10 0", opacity:"0.3"},600);
+	element.delay(1200).animate({padding:"10 0", opacity:"0.3"},600);
 	$(".loc.level_2 > li").attr("class","lv2 not_chosen");
-
-	// Level 2 Click
-	level_2(selected);
+	
 	$(".lv1.chosen").click(function(){
-		$(".level_2, .level_3, .level_4").fadeOut(600);
-		$(".lv1").animate({width:"200", padding:"60 0", "max-height":"160"}).delay(600).fadeIn(600)
-		
-		$(".lv1.not_chosen").click(function() {
-			$(".loc.level_1 > li").attr("class","lv1 not_chosen");
-			$(".loc.level_2 > li").attr("class","lv2 not_chosen");
-			$(".loc.level_3 > li").attr("class","lv3 not_chosen");
-			$(this).attr("class", "lv1 chosen");
-			//level_1(selected);
-		});
+		re_select("lv1");
 	});
-
-});	// The End of Level 1 Click
-
-function level_2(selected) {
+	
 	$(".lv2.not_chosen").click(function(){
-		selected = $(this).attr("value");
-		
-		$(this).attr("class","lv2 chosen");
-		$(".lv2.not_chosen").animate({width:"0",height:"0"},600).hide(600);
-		$(this).delay(1200).animate({padding:"10 0", opacity:"0.3"},600);
-		
-		$(".loc.level_3").delay(600).slideDown(600);
-		
-		var n = 0;
-		var storage = [];
-		var state_name = [];
-
-		
-		if (selected === "pc") { n = 5; storage = [2,6,15,41,53]; }
-		else if (selected === "mt") { n = 8; storage = [4,8,16,32,35,49,56]; }
-		else if (selected === "wn") { n = 7; storage = [19,20,27,29,31,38,46]; }
-		else if (selected === "en") { n = 5; storage = [17,18,26,39,55]; }
-		else if (selected === "ma") { n = 3; storage = [34,36,42]; }
-		else if (selected === "ne") { n = 6; storage = [9,23,25,33,44,50]; }
-		else if (selected === "ws") { n = 4; storage = [5,22,40,48]; }
-		else if (selected === "es") { n = 4; storage = [1,21,28,47]; }
-		else if (selected === "sa") { n = 9; storage = [10,11,12,13,24,37,45,51,54]; }
-		
-		d3.json("ctrl/dat/statecodes.json", function(state_data){
-			d3.values(state_data).map(function(d){ 
-				for (var i = 0; i < n; i++) {
-					if (Number(d.code) == storage[i]) {
-						state_name.push(d.name); 
-					}
-				}
-			});
-			
-			for (var i = 0; i < n; i++) {
-				$(".loc.level_3").append("<li value='" + storage[i] + "'" + ">" + state_name[i] + "</li>");
-			}
-			$(".loc.level_3 > li").attr("class","lv3 not_chosen");
-
-			// Level 3 Click
-			level_3(selected);
-			
-		});	//	statecodes.json
-	});	// The End of Level 2 Click
+		level_2($(this));
+	});
 }
 
-function level_3(selected) {
+function level_2(element) {
+	var selected = element.attr("value");
+	
+	element.attr("class","lv2 chosen");
+	$(".lv2.not_chosen").animate({width:"0"},600).hide(600);
+	element.delay(1200).animate({padding:"10 0", opacity:"0.3"},600);
+	
+	$(".loc.level_3").delay(600).slideDown(600);
+	
+	var n = 0;
+	var storage = [];
+	var state_name = [];
+	
+	if (selected === "pc") { n = 5; storage = [2,6,15,41,53]; }
+	else if (selected === "mt") { n = 8; storage = [4,8,16,32,35,49,56]; }
+	else if (selected === "wn") { n = 7; storage = [19,20,27,29,31,38,46]; }
+	else if (selected === "en") { n = 5; storage = [17,18,26,39,55]; }
+	else if (selected === "ma") { n = 3; storage = [34,36,42]; }
+	else if (selected === "ne") { n = 6; storage = [9,23,25,33,44,50]; }
+	else if (selected === "ws") { n = 4; storage = [5,22,40,48]; }
+	else if (selected === "es") { n = 4; storage = [1,21,28,47]; }
+	else if (selected === "sa") { n = 9; storage = [10,11,12,13,24,37,45,51,54]; }
+	
+	d3.json("ctrl/dat/statecodes.json", function(state_data){
+		d3.values(state_data).map(function(d){ 
+			for (var i = 0; i < n; i++) {
+				if (Number(d.code) == storage[i]) {
+					state_name.push(d.name); 
+				}
+			}
+		});
+		
+		for (var i = 0; i < n; i++) {
+			$(".loc.level_3").append("<li value='" + storage[i] + "'" + ">" + state_name[i] + "</li>");
+		}
+		$(".loc.level_3 > li").attr("class","lv3 not_chosen");
+
+		// Level 3 Click
+		level_3();
+		$(".lv2.chosen").click(function(){ 
+			re_select("lv2");
+			level_2(); 
+		});
+	});	//	statecodes.json
+}
+
+function level_3() {
 	var county_name = [];
 	var county_code = [];
 
 	$(".lv3.not_chosen").click(function(){
-		selected = $(this).attr("value");
+		var selected = $(this).attr("value");
 		
 		$(this).attr("class","lv3 chosen");
-		$(".lv3.not_chosen").animate({width:"0",height:"0"},600).hide(600);
+		$(".lv3.not_chosen").animate({width:"0"},600).hide(600);
 		$(this).delay(1200).animate({padding:"10 0", opacity:"0.3"},600);
 		
 		$(".loc.level_4").delay(600).slideDown(600);
@@ -251,6 +199,10 @@ function level_3(selected) {
 			$(".loc.level_4 > li").attr("class","lv4");
 			
 			level_4(county_data);
+			$(".lv3.chosen").click(function(){ 
+				re_select("lv3");
+				level_3();
+			});
 		});
 	});	// The End of Level 3 Click
 }
@@ -260,6 +212,33 @@ function level_4(county_data) {
 		var value = $(this).attr("value");
 		add_county(value, county_data);
 	});
+}
+
+function re_select(level) {
+	var whoami = level;
+	
+	if (whoami == "lv1") {
+		$(".lv1").attr("class","lv1 not_chosen");
+		$(".level_2, .level_3, .level_4").fadeOut(600);
+		$(".level_2, .level_3, .level_4").children().remove();
+		$(".lv1").animate({width:"200", padding:"60 0", opacity:"1"}).fadeIn(600);
+		
+		$(".lv1.not_chosen").click(function(){
+			level_1($(this));
+		});
+	}
+	else if (whoami == "lv2") {
+		$(".lv2").attr("class","lv2 not_chosen");
+		$(".level_3, .level_4").fadeOut(600);
+		$(".level_3, .level_4").children().remove();	
+		$(".lv2").animate({width:"200", padding:"60 0", opacity:"1"}).fadeIn(600);
+	}
+	else if (whoami == "lv3") {
+		$(".lv3").attr("class","lv3 not_chosen");
+		$(".level_4").fadeOut(600);
+		$(".level_4").children().remove();	
+		$(".lv3").animate({width:"200", padding:"60 0", opacity:"1"}).fadeIn(600);
+	}
 }
 
 function add_county(id, data) {
@@ -331,6 +310,7 @@ $("#menu_cbox").click(function(){
 });
 
 $("#cbox_close").click(function(){
+	$("#cbox").animate({strollTop:0});
 	$("#cbox").animate({top:"30%", height:"40px"},800).fadeOut(800).css({overflow:"hidden"});
 	$("#cbox").attr("value","close");
 });
@@ -348,19 +328,29 @@ angular.module("app", []).controller("name_ctrl", function($scope){
 		var id_list = d3.keys(county_data);
 		var county_list = d3.values(county_data);
 		county_name_list = county_list.map(function(d){
-			return d.nice;
+			return d.key;
 		});
 
 		$scope.arr = county_name_list;
-		$("#select").click(function(){
+		$("#select").click(cl());
+		
+		$("input").keypress(function(event){
+			if(event.keyCode == 13) {
+				cl();
+			}
+		});
+		function cl() {
+			$("#name_msg").text("");
 			var name = $("#county_search").val();
 			
 			for (var i in county_data) {
-				if (county_data[i].nice.toLowerCase() == name) {
-					console.log(i);	
+				if (county_data[i].key.toLowerCase() == name) {
+					add_county(i, county_data);
+					$("#name_msg").html("<b>" + county_data[i].key + "</b> is added");
+					$("#county_search").val("");
 				}
 			}
-		});
+		}		
 	});
 });
 
@@ -414,7 +404,7 @@ d3.json("ctrl/dat/us.json", function(topo) {
 			var cid = $(this).attr("id");
 			
 			add_county(cid, county_data);
-
+			$("#location > p").html("<b>" + county_data[cid].key + "</b> is added");
 			$(this).attr("class","selected_county");
 		});
 	});
