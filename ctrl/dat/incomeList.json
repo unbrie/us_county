@@ -1,0 +1,25 @@
+{
+  "countyFiles": [
+    "Percapitapersonalincome1990.json",
+    "Percapitapersonalincome1991.json",
+    "Percapitapersonalincome1992.json",
+    "Percapitapersonalincome1993.json",
+    "Percapitapersonalincome1994.json",
+    "Percapitapersonalincome1995.json",
+    "Percapitapersonalincome1996.json",
+    "Percapitapersonalincome1997.json",
+    "Percapitapersonalincome1998.json",
+    "Percapitapersonalincome1999.json",
+    "Percapitapersonalincome2000.json",
+    "Percapitapersonalincome2001.json",
+    "Percapitapersonalincome2002.json",
+    "Percapitapersonalincome2003.json",
+    "Percapitapersonalincome2004.json",
+    "Percapitapersonalincome2005.json",
+    "Percapitapersonalincome2006.json",
+    "Percapitapersonalincome2007.json"
+  ],
+  "mapFiles": [
+    "Percapitapersonalincome2007.json"
+  ]
+}

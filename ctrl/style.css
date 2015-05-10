@@ -315,6 +315,7 @@ body {
 /* subject >>> */
 svg {
 	border:1px solid white;
+  background: white;
 }
 
 .subject {
@@ -324,13 +325,9 @@ svg {
 
 #svg_map {
 	vertical-align:top;
-	width:920px;
-	height:600px;
 }
 
-#svg_lp1, #svg_lp2 {
-	width:450px;
-	height:300px;
+#svg_lp1 {
 }
 
 #water {
@@ -437,3 +434,66 @@ svg {
 	border:1px solid gray;
 	margin:40px 0;
 }/* <<< County Box */
+
+
+
+/* SEAN */
+
+.tick > line {
+   fill: none;
+   stroke: black;
+}
+
+.tick > text {
+   fill: black;
+}
+
+.dataPath {
+   opacity: .1;
+   stroke: steelblue;
+   stroke-width: 2;
+   fill:none;
+}
+
+.dataPath:hover {
+   opacity: 1;
+   stroke-width: 2;
+   stroke: red;
+}
+
+.unselectedByMap {
+  fill-opacity: 0.0;
+  opacity: .001;
+  stroke: grey;
+  stroke-width: 1;
+}
+.unselectedByLine {
+  fill-opacity: 0.0;
+  opacity: .001;
+  stroke: grey;
+  stroke-width: 1;
+}
+.selectedState {
+}
+
+.extent {
+  fill: #000;
+  fill-opacity: .2;
+  stroke: #fff;
+}
+
+.start {
+	border:1px solid black;
+	padding:300px;
+	cursor:pointer;
+}
+
+.mstate {
+	fill:none;
+	stroke:hsl(120,50%, 30%);
+}
+
+.mcounty {
+	stroke:hsl(120,0%, 30%);
+	stroke-width:0.3px;
+}
