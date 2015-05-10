@@ -1,0 +1,25 @@
+{
+  "countyFiles": [
+    "Birthsper1,000population1990.json",
+    "Birthsper1,000population1991.json",
+    "Birthsper1,000population1992.json",
+    "Birthsper1,000population1993.json",
+    "Birthsper1,000population1994.json",
+    "Birthsper1,000population1995.json",
+    "Birthsper1,000population1996.json",
+    "Birthsper1,000population1997.json",
+    "Birthsper1,000population1998.json",
+    "Birthsper1,000population1999.json",
+    "Birthsper1,000population2000.json",
+    "Birthsper1,000population2001.json",
+    "Birthsper1,000population2002.json",
+    "Birthsper1,000population2003.json",
+    "Birthsper1,000population2004.json",
+    "Birthsper1,000population2005.json",
+    "Birthsper1,000population2006.json",
+    "Birthsper1,000population2007.json"
+  ],
+  "mapFiles": [
+    "Birthsper1,000population2007.json"
+  ]
+}

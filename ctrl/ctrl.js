@@ -33,10 +33,16 @@ $(".menu_btn").click(function() {
 	}
 	
 	if (whoami_class === "sub") {
-		if (whoami === "sub_water") {
+		if (whoami === "sub_birth") {
 			$(".subject").fadeIn(1000);
-			init_water();
-		}// will be added more
+			init_birth();
+		} else if (whoami === "sub_unemp") {
+			$(".subject").fadeIn(1000);
+			init_unemp();
+		} else if (whoami === "sub_income") {
+			$(".subject").fadeIn(1000);
+			init_income();
+		}
 		
 		selected_class = "sub";
 	}
