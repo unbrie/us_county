@@ -502,3 +502,9 @@ svg {
   background: white;
   font: black;
 }
+
+#legendAxis > .tick > line {
+  fill:none;
+  opacity: 0;
+  fill-opacity: 0;
+}

@@ -186,14 +186,52 @@ function load_file(fname) {
   
   function colorMap(svg, data) {
    var keys = d3.keys(data);
-   var values = d3.values(data).map(function(d){ return Number(d); });
-   
-   var max = d3.max(values);
-   var output = ["#fff7fb", "#ece7f2", "#d0d1e6", "#a6bddb", "#74a9cf", "#3690c0", "#0570b0", "#034e7b"];
-   var waterScale = d3.scale.quantize().domain([0, max]).range(output);
+   var values = _.map(data, function(d){ return Number(d); });
+   var sortedValues = values.sort(function(a,b) { return a - b; });
+   var max = d3.max(sortedValues);
+   var most = d3.quantile(sortedValues, .9);
+   var least = d3.quantile(sortedValues, .1);
+
+   var output = ["#a6bddb","#74a9cf","#3690c0","#0570b0","#034e7b"];
+   var waterScale = d3.scale.quantize().domain([least, most]).range(output);
    svg.selectAll('.mcounty').style('fill', function(d) {
      return waterScale(data[codes[d.id].key]);
    });
+
+  var boxWidth = 30;
+  var legendHeight = 200;
+  var numBoxes = 5;
+  var boxes = d3.range(numBoxes);
+  var quantiles = d3.range(numBoxes).map(function(i) { 
+    return d3.quantile(sortedValues, .1 + .2 * i); 
+  });
+  // legendScale : boxIndex --> GPA
+  var legendScale = d3.scale.linear().domain(d3.range(numBoxes).reverse()).range(quantiles);
+
+  var legend = svg.append("g")
+      .attr("id", "legendTransform")
+      .attr("transform", "translate(" 
+          + (mWidth - 3 * boxWidth) + "," 
+          + (3*mHeight/4 - legendHeight/2) + ")")
+      .selectAll("rect")
+      .data(boxes)
+      .enter()
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", function(d) { return legendHeight * d / numBoxes; })
+      .attr("width", boxWidth)
+      .attr("height", legendHeight / numBoxes)
+      // colorScale o legendScale : boxIndex --> quantile --> Color
+      .attr("fill", function(d) { return waterScale(legendScale(d)); })
+
+  var legendLabels = d3.select('#legendTransform')
+          .selectAll('text')
+          .data(quantiles).enter().append('text')
+          .text(function(d) {
+            return Math.round(d);
+          }).attr('transform', function(d, i) {
+            return 'translate(32,' + String((numBoxes - 0.5 - i) * legendHeight / numBoxes + 5) + ')';
+          });
   }
   
   // Load data
@@ -216,7 +254,7 @@ function load_file(fname) {
       colorMap(svg, data);
     });
   });
-  
+ 
   function processCountyFiles(errors, datas) {
     if(errors) { console.log(errors); }
     var v = Object.keys(datas[0]);
@@ -251,7 +289,7 @@ function load_file(fname) {
     var xMax = d3.max(data, function(d) { 
       return d3.max(d.data, function(e) { return e[0] });
     });
-    var xExtent = [xMin, xMax];
+    var xExtent = [xMin-.5, xMax+.5];
   
     var yMin = d3.min(data, function(d) { 
       return d3.min(d.data, function(e) { return e[1] });
