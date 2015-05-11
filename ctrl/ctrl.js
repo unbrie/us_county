@@ -158,12 +158,17 @@ function level_2(element) {
 			$(".loc.level_3").append("<li value='" + storage[i] + "'" + ">" + state_name[i] + "</li>");
 		}
 		$(".loc.level_3 > li").attr("class","lv3 not_chosen");
-
-		// Level 3 Click
-		level_3();
-		$(".lv2.chosen").click(function(){ 
+		
+		$(".lv1.chosen").click(function(){
+			re_select("lv1");
+		});
+		
+		$(".lv2.chosen").click(function(){
 			re_select("lv2");
-			level_2(); 
+		});
+		
+		$(".lv3.not_chosen").click(function(){
+			level_3($(this));
 		});
 	});	//	statecodes.json
 }
@@ -197,21 +202,23 @@ function level_3() {
 				$(".loc.level_4").append("<li value='" + county_code[i] + "'" + ">" + county_name[i] + "</li>");
 			}
 			$(".loc.level_4 > li").attr("class","lv4");
-			
-			level_4(county_data);
-			$(".lv3.chosen").click(function(){ 
+
+			$(".lv1.chosen").click(function(){
+				re_select("lv1");
+			});			
+			$(".lv2.chosen").click(function(){
+				re_select("lv2");
+			});
+			$(".lv3.chosen").click(function(){
 				re_select("lv3");
-				level_3();
+			});
+			
+			$(".lv4").click(function(){
+				var value = $(this).attr("value");
+				add_county(value, county_data);
 			});
 		});
 	});	// The End of Level 3 Click
-}
-
-function level_4(county_data) {
-	$(".lv4").click(function(){
-		var value = $(this).attr("value");
-		add_county(value, county_data);
-	});
 }
 
 function re_select(level) {
