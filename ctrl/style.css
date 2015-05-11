@@ -338,14 +338,13 @@ body {
 #detail_info {
 	text-align:left;
 	margin-left:30px;
-
 	font-family:Verdana, Geneva, sans-serif;	
 }
 
 #detail_table {
 	margin-top:10px;
 	font-family:Verdana, Geneva, sans-serif;	
-    table-layout: fixed;
+	table-layout:fixed;
 }
 
 #detail_table td{
@@ -462,9 +461,16 @@ body {
 	background:#D76666;	
 }	
 
+.svg_title {
+	margin:30px 120px 0 120px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:bold;	
+	color:rgba(0,0,0,0.7);
+}
+
 .svg_comp {
 	border:1px solid gray;
-	margin:40px 0;
+	margin:10px 0;
 }/* <<< County Box */
 
 
