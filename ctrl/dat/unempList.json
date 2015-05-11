@@ -17,12 +17,9 @@
     "Civilianlaborforceunemploymentrate2004.json",
     "Civilianlaborforceunemploymentrate2005.json",
     "Civilianlaborforceunemploymentrate2006.json",
-    "Civilianlaborforceunemploymentrate2007.json",
-    "Civilianlaborforceunemploymentrate2008.json",
-    "Civilianlaborforceunemploymentrate2009.json",
-    "Civilianlaborforceunemploymentrate2010.json"
+    "Civilianlaborforceunemploymentrate2007.json"
   ],
   "mapFiles": [
-    "Civilianlaborforceunemploymentrate2010.json"
+    "Civilianlaborforceunemploymentrate2007.json"
   ]
 }
