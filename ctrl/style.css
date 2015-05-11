@@ -497,3 +497,8 @@ svg {
 	stroke:hsl(120,0%, 30%);
 	stroke-width:0.3px;
 }
+
+#box_text {
+  background: white;
+  font: black;
+}
