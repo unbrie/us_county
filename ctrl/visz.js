@@ -51,9 +51,9 @@ function clicked(d){
     .classed("active", centered && function(d){ return d === centered; });
 }
 
-function init_birth() { load_file('birthList.json'); }
-function init_unemp() { load_file('unempList.json'); }
-function init_income() { load_file('incomeList.json'); }
+function init_birth() { $(".subject_title").text("Birth Rate per 1,000 Population".toUpperCase()); load_file('birthList.json'); }
+function init_unemp() { $(".subject_title").text("Unemployment Rate".toUpperCase()); load_file('unempList.json'); }
+function init_income() { $(".subject_title").text("Personal Income per Capita".toUpperCase()); load_file('incomeList.json'); }
 
 function countyTable(d, file, codes, data, convert) {
   var header = ['Name'];

@@ -54,13 +54,14 @@ body {
 	top:50px;
 	left:50px;
 	text-align:left;
+	color:hsl(0,0%,75%);
 }
 
 #view_btn {
 	width:200px;
 	margin:40px 0;
 	padding:20px;
-	border:1px solid black;
+	border:1px solid hsl(0,0%,75%);
 	cursor:pointer;
 	font-weight:bold;
 	font-size:20px;
@@ -313,14 +314,17 @@ body {
 
 
 /* subject >>> */
-svg {
-	border:1px solid white;
-  background: white;
-}
-
 .subject {
 	padding:30px 0;
-	background:black;
+	background:white;
+}
+
+.subject_title {
+	font-family:Verdana, Geneva, sans-serif;
+	color:hsl(0,0%,40%);
+	font-size:25px;
+	text-align:left;
+	margin-left:50px;
 }
 
 #svg_map {
@@ -328,6 +332,46 @@ svg {
 }
 
 #svg_lp1 {
+	
+}
+
+#detail_info {
+	text-align:left;
+	margin-left:30px;
+
+	font-family:Verdana, Geneva, sans-serif;	
+}
+
+#detail_table {
+	margin-top:10px;
+	font-family:Verdana, Geneva, sans-serif;	
+}
+
+#detail_table td{
+	padding:10px 0;
+	width:30px;
+}
+
+#detail_table tr:nth-child(1){
+	border-bottom:2px solid hsl(0,0%,85%);
+	font-size:13px;
+	font-weight:bold;
+}
+
+#detail_table tr:nth-child(2){
+	background:hsl(0,0%,95%);
+	font-size:11px;
+}
+
+.axis path, .axis line {
+	fill:none;
+	stroke:hsl(0,0%,65%);;
+}
+
+.axis text {
+	font-family:verdana;
+	font-size:10px;
+	color:hsl(0,0%,85%);
 }
 
 #water {
@@ -338,19 +382,8 @@ svg {
 
 .us {
 	fill:none;
-	stroke:hsl(120,100%,0%);
+	stroke:hsl(120,0%,0%);
 	stroke-width:.3px;
-}
-
-.state {
-	fill:none;
-	stroke:hsl(240,50%,0%);
-}
-
-.county {
-	fill:hsl(240,40%,60%);
-	stroke:hsl(120,0%,100%);
-	stroke-width:0.3px;
 }
 
 .county:hover {
@@ -428,8 +461,8 @@ svg {
 	background:#D76666;	
 }	
 
-#svg_compare {
-	width:85%;
+.svg_comp {
+	width:30%;
 	height:300px;
 	border:1px solid gray;
 	margin:40px 0;
@@ -490,7 +523,8 @@ svg {
 
 .mstate {
 	fill:none;
-	stroke:hsl(120,50%, 30%);
+	stroke:hsl(200,10%,30%);
+	stroke-width:0.6px;
 }
 
 .mcounty {

@@ -12,8 +12,8 @@
 
 <script src="ctrl/lib/jquery-1.11.2.js"></script>
 <script src="ctrl/lib/js/bootstrap.min.js"></script>
-<script src="ctrl/lib/js/queue.v1.min.js"></script>
-<script src="ctrl/lib/js/underscore.js"></script>
+<script src="ctrl/lib/queue.v1.min.js"></script>
+<script src="ctrl/lib/underscore.js"></script>
 <script src="ctrl/lib/d3.min.js"></script>
 <script src="ctrl/lib/angular.js"></script>
 <script src="ctrl/lib/topojson.v1.min.js"></script>
@@ -38,7 +38,7 @@
 				<ul class="dropdown-menu">
 					<li><a class="menu_btn sub" id="sub_birth" href="#">Birth Rate</a></li>
 					<li><a class="menu_btn sub" id="sub_unemp" href="#">Unemployment</a></li>
-					<li><a class="menu_btn sub" id="sub_income" href="#">Median Income</a></li>
+					<li><a class="menu_btn sub" id="sub_income" href="#">Personal Income</a></li>
 				</ul>
 			</li>
 			<li>
@@ -58,7 +58,6 @@
 			</li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right" style="margin-right:15px;">
-			<!--<li><a href="#">Counties <span class="glyphicon glyphicon-shopping-cart"></span></a></li>-->
 			<li><a id="menu_cbox">Saved Counties <span class="glyphicon glyphicon-shopping-cart"></span></a></li>
 		</ul>
 	</div>	<!-- navbar-collapse -->
@@ -69,10 +68,10 @@
         <div class="carousel slide" id="slide_show">
             <div class="carousel-inner">
                 <div class="item active">
-                    <img src="img/water_01.jpg" alt="Water Use">
+                    <img src="img/income_01.jpg" alt="Personal Income">
                     <section class="caro_desc">
-                    	<h1>Water Use</h1>
-                        <h4>Check water use per capita of each county now!</h4>
+                    	<h1>Personal Income per Capita</h1>
+                        <h4>Check which county has the highest personal income per capita!</h4>
                         <div class="start" id="view_btn">START</div>
                     </section>
                 </div>
@@ -85,11 +84,14 @@
                         <div class="View" id="view_btn">START</div>
                     </section>
                 </div>
-                <!--
                 <div class="item">
-                    <img src="" alt="">
-                    <div class="carousel-caption"></div>
-                </div>-->
+                    <img src="img/unemployment_01.jpg" alt="Unemployment">
+					<section class="caro_desc">
+                    	<h1>Unemployment</h1>
+                        <h4>Check the unemployment data.</h4>
+                        <div class="View" id="view_btn">START</div>
+                    </section>
+                </div>
             </div>
         
             <ol class="carousel-indicators" id="caro_indicator">
@@ -115,12 +117,14 @@
 </div><!-- .scree front -->
 
 <div class="screen subject" style="display:none;">
-    	<svg id="svg_map" width="800" height="600"></svg>
-	    <svg id="svg_lp1" width="600" height="600"></svg>
-      <div>
-        <table id="detail_table">
+	<h1 class="subject_title"></h1>
+	<svg id="svg_map" width="800" height="600"></svg>
+    <svg id="svg_lp1" width="600" height="600"></svg>
+    <div>
+    	<h3 id="detail_info">Details</h3>
+        <table id="detail_table" class="table table-striped">
         </table>
-      </div>
+    </div>
 </div>	<!-- .screen subject -->
 
 <div class="screen search" style="display:none;">
@@ -132,7 +136,7 @@
     
     <div class="tab-content">
         <div class="tab-pane fade" id="category">
-        	<!--<h3>Category Search</h3>-->
+        	<p>Category Search</p>
             <ul class="loc level_1">
             	<li value="w">WEST</li>
                 <li value="m">MIDWEST</li>
@@ -205,9 +209,9 @@
 		<nav>
 			<h4>SUBJECT</h4>
 			<ul>
-				<li>Water Use</li>
-				<li>Something</li>
-				<li>Else</li>
+				<li>Birth Rate</li>
+				<li>Unemployment</li>
+				<li>Personal-Income</li>
 			</ul>
 		</nav>
 		<nav>
@@ -240,7 +244,9 @@
     </div>
     <p id="cbox_msg">The list is empty.</p><hr>
 	<ul id="cbox_list"></ul><hr>
-    <svg id="svg_compare"></svg>
+    <svg class="svg_comp" id="svg_comp_1"></svg>
+    <svg class="svg_comp" id="svg_comp_2"></svg>
+    <svg class="svg_comp" id="svg_comp_3"></svg>
 </div>
 
 <script src="ctrl/ctrl.js"></script>
