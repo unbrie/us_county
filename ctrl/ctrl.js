@@ -352,7 +352,7 @@ angular.module("app", []).controller("name_ctrl", function($scope){
 			var name = $("#county_search").val();
 			
 			for (var i in county_data) {
-				if (county_data[i].key.toLowerCase() == name) {
+				if (county_data[i].key.toLowerCase() == name.toLowerCase()) {
 					add_county(i, county_data);
 					$("#name_msg").html("<b>" + county_data[i].key + "</b> is added");
 					$("#county_search").val("");
