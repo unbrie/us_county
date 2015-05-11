@@ -5,6 +5,7 @@ var path = d3.geo.path();
 var zoomScale = d3.behavior.zoom()
 	.scaleExtent([1,10])
 	.on("zoom", zoomControl);
+var map = d3.select('#svg_map');
 
 function layout_set() {
 	var width_size = $(window).width();
@@ -36,14 +37,14 @@ function clicked(d){
   }
   else {  // If a selected path is zoomed already
     x = width / 2;
-    y = height / 2;
+    y = weight / 2;
     k = 1;
     centered = null;
   }
                                                         
   map.transition()
     .duration(500)
-    .attr({transform:"translate(" + width / 2 + "," + height / 2 + ")scale(" + k + 
+    .attr({transform:"translate(" + width / 2 + "," + weight / 2 + ")scale(" + k + 
     ") translate(" + -x + "," + -y + ")"});
   
   map.selectAll("path")
@@ -54,60 +55,23 @@ function init_birth() { load_file('birthList.json'); }
 function init_unemp() { load_file('unempList.json'); }
 function init_income() { load_file('incomeList.json'); }
 
+function countyTable(d, file, codes, data, convert) {
+  var header = ['Name'];
+  var name = convert ? d.name : codes[d.id].key;
+  var row = [name];
+  data = _.filter(data, function(A) { return A.name === name; })[0].data;
+
+  for(var i = 0; i < data.length; i++) {
+    header.push(data[i][0]);
+    row.push(data[i][1]);
+  }
+
+  return [header, row];
+}
+var g_data;
 function load_file(fname) {
 
-  var stateAbbrevToFIPS = {
-    "AL":"1",
-    "AK":"2",
-    "AZ":"4",
-    "AR":"5",
-    "CA":"6",
-    "CO":"8",
-    "CT":"9",
-    "DE":"10",
-    "FL":"12",
-    "GA":"13",
-    "HI":"15",
-    "ID":"16",
-    "IL":"17",
-    "IN":"18",
-    "IA":"19",
-    "KS":"20",
-    "KY":"21",
-    "LA":"22",
-    "ME":"23",
-    "MD":"24",
-    "MA":"25",
-    "MI":"26",
-    "MN":"27",
-    "MS":"28",
-    "MO":"29",
-    "MT":"30",
-    "NE":"31",
-    "NV":"32",
-    "NH":"33",
-    "NJ":"34",
-    "NM":"35",
-    "NY":"36",
-    "NC":"37",
-    "ND":"38",
-    "OH":"39",
-    "OK":"40",
-    "OR":"41",
-    "PA":"42",
-    "RI":"44",
-    "SC":"45",
-    "SD":"46",
-    "TN":"47",
-    "TX":"48",
-    "UT":"49",
-    "VT":"50",
-    "VA":"51",
-    "WA":"53",
-    "WV":"54",
-    "WI":"55",
-    "WY":"56"
-  }
+  var stateAbbrevToFIPS = { "AL":"1", "AK":"2", "AZ":"4", "AR":"5", "CA":"6", "CO":"8", "CT":"9", "DE":"10", "FL":"12", "GA":"13", "HI":"15", "ID":"16", "IL":"17", "IN":"18", "IA":"19", "KS":"20", "KY":"21", "LA":"22", "ME":"23", "MD":"24", "MA":"25", "MI":"26", "MN":"27", "MS":"28", "MO":"29", "MT":"30", "NE":"31", "NV":"32", "NH":"33", "NJ":"34", "NM":"35", "NY":"36", "NC":"37", "ND":"38", "OH":"39", "OK":"40", "OR":"41", "PA":"42", "RI":"44", "SC":"45", "SD":"46", "TN":"47", "TX":"48", "UT":"49", "VT":"50", "VA":"51", "WA":"53", "WV":"54", "WI":"55", "WY":"56" }
   
   function buildMap(svg, topo) {
     var path = d3.geo.path().projection(
@@ -134,7 +98,7 @@ function load_file(fname) {
         var inc = _.filter(coords, function(x) {
           return x[0] > e[0][0] && x[0] < e[1][0] && x[1] > e[0][1] && x[1] < e[1][1];
         });
-        if(inc.length > coords.length/2 ) {
+        if(inc.length > coords.length/3 ) {
           selected[d.id] = 1;
           return 1;
         } else {
@@ -166,14 +130,24 @@ function load_file(fname) {
       }
     }
   
-    svg = svg.append("g").call(brush);
-    console.log(svg);
+    svg.append("g").call(brush);
 
     svg.selectAll("path")
       .data(topojson.feature(topo, topo.objects.counties).features)
       .enter().append("path")
       .classed('mcounty', true)
-      .attr('d', path);
+      .attr('d', path)
+      .on('mouseenter', function(d) { 
+        d3.select('#detail_table').selectAll('tr').remove();
+        d3.select('#detail_table')
+          .selectAll("tr")
+          .data(countyTable(d, fname, codes, g_data, false))
+          .enter().append("tr")
+          .selectAll("td")
+          .data(function(r) { return r; })
+          .enter().append("td")
+          .text(function(d) { return String(d); });
+      });
     
     svg.append("path")
       .datum(topojson.mesh(topo, topo.objects.land))
@@ -187,7 +161,6 @@ function load_file(fname) {
       .classed('mstate', true)
       .attr('d', path);
   }
-
 
   d3.select("#svg_map").selectAll('*').remove();
   d3.select("#svg_lp1").selectAll('*').remove();
@@ -216,7 +189,8 @@ function load_file(fname) {
    var values = d3.values(data).map(function(d){ return Number(d); });
    
    var max = d3.max(values);
-   var waterScale = d3.scale.linear().domain([0, max]).range(["white", "blue"]);
+   var output = ["#fff7fb", "#ece7f2", "#d0d1e6", "#a6bddb", "#74a9cf", "#3690c0", "#0570b0", "#034e7b"];
+   var waterScale = d3.scale.quantize().domain([0, max]).range(output);
    svg.selectAll('.mcounty').style('fill', function(d) {
      return waterScale(data[codes[d.id].key]);
    });
@@ -237,7 +211,7 @@ function load_file(fname) {
     deferAll(fileList.countyFiles, processCountyFiles);
     deferAll(fileList.mapFiles, function(errors, datas) {
       if(errors) { console.log(errors); }
-      var data = datas[0];
+      data = datas[0];
       buildMap(svg, topo);
       colorMap(svg, data);
     });
@@ -245,19 +219,18 @@ function load_file(fname) {
   
   function processCountyFiles(errors, datas) {
     if(errors) { console.log(errors); }
-    
     var v = Object.keys(datas[0]);
   
     var data = [];
     for(var i = v.length - 1; i >= 0; i--) {
       var o = [];
       var index = v[i];
-      for(var j = datas.length - 1; j >= 0; j--) {
+      for(var j = 0; j < datas.length; j++) {
         o.push([1990 + j, Number(datas[j][index])]);
       }
       data.push({name: v[i], data:o});
     }
-  
+    g_data = data;
     lineplot(data, '#svg_lp1'); 
   }
   
@@ -316,6 +289,7 @@ function load_file(fname) {
             return true;
           }
       });
+
       map.selectAll('.mcounty').classed('unselectedByLine', function(d) {
         return !selected[codes[d.id].key];
       });
@@ -326,7 +300,7 @@ function load_file(fname) {
         map.selectAll(".mcounty").classed('unselectedByLine', false);
       }
     }
-    svg = svg.append("g").call(brush);
+    svg.append("g").call(brush);
   
     var line = d3.svg.line()
         .x(function(d) { return xscale(d[0]) })
@@ -335,6 +309,17 @@ function load_file(fname) {
     var lines = svg.selectAll("path").data(data).enter().append("path")
                    .classed("dataPath", true)
                    .attr("d", function(d) { return line(d.data); })
+                   .on('mouseenter', function(d) { 
+                     d3.select('#detail_table').selectAll('tr').remove();
+                     d3.select('#detail_table')
+                       .selectAll("tr")
+                       .data(countyTable(d, fname, codes, data, true))
+                       .enter().append("tr")
+                       .selectAll("td")
+                       .data(function(r) { return r; })
+                       .enter().append("td")
+                       .text(function(d) { return String(d); });
+                   })
   
     svg.append("g")
         .attr("class", "axis")
@@ -347,4 +332,3 @@ function load_file(fname) {
   }
 
 }
-
