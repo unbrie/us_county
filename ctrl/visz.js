@@ -51,9 +51,20 @@ function clicked(d){
     .classed("active", centered && function(d){ return d === centered; });
 }
 
-function init_birth() { $(".subject_title").text("Birth Rate per 1,000 Population".toUpperCase()); load_file('birthList.json'); }
-function init_unemp() { $(".subject_title").text("Unemployment Rate".toUpperCase()); load_file('unempList.json'); }
-function init_income() { $(".subject_title").text("Personal Income per Capita".toUpperCase()); load_file('incomeList.json'); }
+function init_birth() { 
+  $(".subject_title").text("Birth Rate per 1,000 Population".toUpperCase()); 
+  load_file('birthList.json'); 
+}
+
+function init_unemp() { 
+  $(".subject_title").text("Unemployment Rate".toUpperCase()); 
+  load_file('unempList.json'); 
+}
+
+function init_income() { 
+  $(".subject_title").text("Personal Income per Capita".toUpperCase()); 
+  load_file('incomeList.json'); 
+}
 
 function countyTable(d, file, codes, data, convert) {
   var header = ['Name'];
@@ -225,11 +236,12 @@ function load_file(fname) {
       // colorScale o legendScale : boxIndex --> quantile --> Color
       .attr("fill", function(d) { return waterScale(legendScale(d)); })
 
+  var legendFormatter = (fname === 'incomeList.json') ? d3.format(',.0f') : d3.format('.1f');
   var legendLabels = d3.select('#legendTransform')
           .selectAll('text')
           .data(quantiles).enter().append('text')
           .text(function(d) {
-            return Math.round(d);
+            return legendFormatter(d);
           }).attr('transform', function(d, i) {
             return 'translate(32,' + String((numBoxes - 0.5 - i) * legendHeight / numBoxes + 5) + ')';
           });
@@ -302,8 +314,8 @@ function load_file(fname) {
   
     var xscale = d3.scale.linear().domain(xExtent).range([wStart,wEnd]);
     var yscale = d3.scale.linear().domain(yExtent).range([hStart,hEnd]);
-    var xaxis = d3.svg.axis().scale(xscale).orient("bottom");
-    var yaxis = d3.svg.axis().scale(yscale).orient("left");
+    var xaxis = d3.svg.axis().scale(xscale).orient("bottom").tickFormat(d3.format('d'));
+    var yaxis = d3.svg.axis().scale(yscale).orient("left").tickFormat(d3.format('d'));
   
     var map = d3.select('#svg_map');
     var brush = d3.svg.brush()
@@ -465,17 +477,20 @@ function init_cbox() {
   
     var xscale = d3.scale.linear().domain(xExtent).range([wStart,wEnd]);
     var yscale = d3.scale.linear().domain(yExtent).range([hStart,hEnd]);
-    var xaxis = d3.svg.axis().scale(xscale).orient("bottom");
-    var yaxis = d3.svg.axis().scale(yscale).orient("left");
+    var xaxis = d3.svg.axis().scale(xscale).orient("bottom").tickFormat(d3.format('d'));
+    var yaxis = d3.svg.axis().scale(yscale).orient("left").tickFormat(d3.format('d'));
   
+    var rColors = d3.scale.category10();
+
     var line = d3.svg.line()
         .x(function(d) { return xscale(d[0]) })
         .y(function(d) { return yscale(d[1]) });
-  
+
     var lines = svg.selectAll("path").data(data).enter().append("path")
                    .classed('dataPath', true)
                    .style('stroke-width', 3)
                    .style('opacity', 1)
+                   .style('stroke', function(d, i) { return rColors(i); })
                    .attr("d", function(d) { return line(d.data); })
                    .on('mouseenter', function(d) {
                      d3.select('#saved_detail_box').text(d.name);
