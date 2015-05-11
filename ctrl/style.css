@@ -345,6 +345,7 @@ body {
 #detail_table {
 	margin-top:10px;
 	font-family:Verdana, Geneva, sans-serif;	
+    table-layout: fixed;
 }
 
 #detail_table td{
@@ -462,8 +463,6 @@ body {
 }	
 
 .svg_comp {
-	width:30%;
-	height:300px;
 	border:1px solid gray;
 	margin:40px 0;
 }/* <<< County Box */

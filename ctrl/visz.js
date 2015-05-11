@@ -68,6 +68,7 @@ function countyTable(d, file, codes, data, convert) {
 
   return [header, row];
 }
+
 var g_data;
 function load_file(fname) {
 
@@ -369,4 +370,124 @@ function load_file(fname) {
         .call(yaxis);
   }
 
+}
+
+function init_cbox() {
+  var tcodes, tincome, tbirths, tunemp;
+  d3.json("ctrl/dat/fixed_ugc.json", function(error, _codes) { 
+    if(error) { console.log(error); }
+    tcodes = _codes;
+  });
+    
+  queue().defer(d3.json, 'ctrl/dat/incomeList.json').await(function(error, incomeList) {
+    if(error) { console.log(error); }
+    queue().defer(d3.json, 'ctrl/dat/birthList.json').await(function(error, birthList) {
+      if(error) { console.log(error); }
+      queue().defer(d3.json, 'ctrl/dat/unempList.json').await(function(error, unempList) {
+        if(error) { console.log(error); }
+        var files = incomeList.countyFiles; 
+        var q = queue();
+        for(var i = 0; i < files.length; i++) {
+          q.defer(d3.json, 'ctrl/dat/' + files[i]);
+        }
+        q.awaitAll(function(error, list) { 
+          tincome = list; 
+          var files = birthList.countyFiles; 
+          var q = queue();
+          for(var i = 0; i < files.length; i++) {
+            q.defer(d3.json, 'ctrl/dat/' + files[i]);
+          }
+          q.awaitAll(function(error, list) { 
+            tbirth = list; 
+            var files = unempList.countyFiles; 
+            var q = queue();
+            for(var i = 0; i < files.length; i++) {
+              q.defer(d3.json, 'ctrl/dat/' + files[i]);
+            }
+            q.awaitAll(function(error, list) { 
+              tunemp = list; 
+              tunemp = tprocess(tunemp);
+              tbirth = tprocess(tbirth);
+              tincome = tprocess(tincome);
+              lineplot(tunemp, '#svg_comp_1');
+              lineplot(tbirth, '#svg_comp_2');
+              lineplot(tincome, '#svg_comp_3');
+            });
+          });
+        });
+      });
+    });
+  });
+
+  function tprocess(datas) {
+    var v = Object.keys(datas[0]);
+  
+    var data = [];
+    for(var i = v.length - 1; i >= 0; i--) {
+      var o = [];
+      var index = v[i];
+      for(var j = 0; j < datas.length; j++) {
+        o.push([1990 + j, Number(datas[j][index])]);
+      }
+      data.push({name: v[i], data:o});
+    }
+    var valid = _.map(county_box, function(d) { return tcodes[d].key; });
+    var t_data = _.filter(data, function(d) { return valid.indexOf(d.name) > -1; });
+    return t_data;
+  }
+
+
+  function lineplot(data, svgId) {
+    var svg = d3.select(svgId);
+  
+    var w = 350, h = 300;
+    var topMargin = 50, botMargin = 40, rightMargin = 0; leftMargin = 50;
+    var wStart = leftMargin, wEnd = w - rightMargin;
+    var hEnd = topMargin, hStart = h - botMargin;
+  
+    svg.selectAll('path').remove();
+    svg.selectAll('.axis').remove();
+    var xMin = d3.min(data, function(d) { 
+      return d3.min(d.data, function(e) { return e[0] });
+    });
+    var xMax = d3.max(data, function(d) { 
+      return d3.max(d.data, function(e) { return e[0] });
+    });
+    var xExtent = [xMin-.5, xMax+.5];
+  
+    var yMin = d3.min(data, function(d) { 
+      return d3.min(d.data, function(e) { return e[1] });
+    });
+    var yMax = 2 * d3.max(data, function(d) { 
+      return d3.mean(d.data, function(e) { return e[1] });
+    });
+    var yExtent = [yMin, yMax];
+  
+    var xscale = d3.scale.linear().domain(xExtent).range([wStart,wEnd]);
+    var yscale = d3.scale.linear().domain(yExtent).range([hStart,hEnd]);
+    var xaxis = d3.svg.axis().scale(xscale).orient("bottom");
+    var yaxis = d3.svg.axis().scale(yscale).orient("left");
+  
+    var line = d3.svg.line()
+        .x(function(d) { return xscale(d[0]) })
+        .y(function(d) { return yscale(d[1]) });
+  
+    var lines = svg.selectAll("path").data(data).enter().append("path")
+                   .classed('dataPath', true)
+                   .style('stroke-width', 3)
+                   .style('opacity', 1)
+                   .attr("d", function(d) { return line(d.data); })
+                   .on('mouseenter', function(d) {
+                     d3.select('#saved_detail_box').text(d.name);
+                   });
+  
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0, " + String(hStart + 10) + ")")
+        .call(xaxis);
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + String(wStart - 10) + ", 0)")
+        .call(yaxis);
+  }
 }
