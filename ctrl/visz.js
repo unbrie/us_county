@@ -1,6 +1,6 @@
 /* Written by Brian Lee & Sean Stephens */
 
-//var width = 920, height = 600;
+var width = 920, height = 600;
 var path = d3.geo.path();
 var zoomScale = d3.behavior.zoom()
 	.scaleExtent([1,10])

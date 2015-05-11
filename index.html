@@ -117,6 +117,7 @@
 <div class="screen subject" style="display:none;">
     	<svg id="svg_map" width="800" height="600"></svg>
 	    <svg id="svg_lp1" width="600" height="600"></svg>
+    
 </div>	<!-- .screen subject -->
 
 <div class="screen search" style="display:none;">
@@ -130,10 +131,10 @@
         <div class="tab-pane fade" id="category">
         	<!--<h3>Category Search</h3>-->
             <ul class="loc level_1">
-            	<li class="lv1 not_chosen" value="w">WEST</li>
-                <li class="lv1 not_chosen" value="m">MIDWEST</li>
-                <li class="lv1 not_chosen" value="n">NORTHEAST</li>
-                <li class="lv1 not_chosen" value="s">SOUTH</li>
+            	<li value="w">WEST</li>
+                <li value="m">MIDWEST</li>
+                <li value="n">NORTHEAST</li>
+                <li value="s">SOUTH</li>
             </ul>
             <ul class="loc level_2" style="display:none;"></ul>
             <ul class="loc level_3" style="display:none;"><!-- State Level --></ul>
@@ -144,7 +145,7 @@
         	<div ng-app="app" ng-controller="name_ctrl">
                 <h4>Type County Name</h4>
                 <input type="text" ng-model="type" id="county_search" tabindex="1" autofocus>
-                <a type="button" class="btn btn-success btn-sm" id="select" tabindex="2">SELECT</a>
+                <a type="button" class="btn btn-success btn-sm" id="select" tabindex="2">SELECT</a><p id="name_msg"></p>
                 <ul>
                 	<li ng-repeat="x in arr | filter:type track by $index">
                     	{{ x }}
@@ -186,6 +187,7 @@
 	<h3>Brian Lee<span><a href="http://linkedin.com/pub/brian-lee/96/620/2b0" target="_blank">LinkedIn</a> | <a href="http://brianin.altervista.org" target="_blank">Website</a></span></h3>
     <p>Brian is a senior undergraduate studying Computer Science at University of Arizona, and also has an experience of studying in architecture major. Still he is interested in design and artwork, and wants to apply concept of neatness and clearness into designing and its programming as well. Southern Arizona's desert climate made him stronger against Wonder Woman and he got survival skills in the wilderness with no A/C, but he needs to come out of the desert to avoid the boredom and the threat of creepy cactus thorns. Perhaps, it is time for him to pursue a new journey in a city like New York?</p>
     
+    <!--<img src="img/sstephens.jpg" alt="Sean Stephens" class="img-circle prf_img" width="100" height="100">-->
     <h3>Sean Stephens<span><a href="#" target="_blank">LinkedIn</a></span></h3>
     <p>Sean is a cool-looking nice guy.</p>
 </div>	<!-- .screen about_dv -->
